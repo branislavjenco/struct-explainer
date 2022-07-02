@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box:
+}
+
+body {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: middle;
+  flex-direction: column;
+  font-family: sans-serif;
+  color: #444;
+}
+
+.main-input {
+  width: 20em;
+  font-size: 30;
+}
+
+
+
+footer {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+  text-align: center;
+}
+
