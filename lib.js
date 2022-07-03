@@ -180,6 +180,11 @@ class FormatInfo {
   }
 }
 
+/**
+ * Combine identical subsequent formats into one format with a count that is a sum of the subsequent formats  
+ * @param {FormatInfo[]} formats 
+ * @returns {FormatInfo[]} coalesced formats
+ */
 function coalesceFormats(formats) {
   let newFormats = [formats[0]];
   for (let i = 1; i < formats.length; i++) {
@@ -203,6 +208,11 @@ function coalesceFormats(formats) {
   return newFormats;
 }
 
+/**
+ * Parses the format string 
+ * @param {string} formatString 
+ * @returns {FormatInfo[]} array of FormatInfo objects
+ */
 function explainFormatString(formatString) {
   let isInvalid = false;
   const L = formatString.length;
