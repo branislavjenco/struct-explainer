@@ -1,20 +1,40 @@
 <html>
   <head>
     <title>Python struct format explainer</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body class="body">
     <header>
       <h1>Explain Python's <tt>struct</tt> format</h1>
     </header>
     <main>
-      <input id="input" class="main-input" type="text" placeholder="Paste in a struct format string">
-      <div id="explanation">
-      </div>
-      <p>See <a href="https://docs.python.org/3/library/struct.html">Python docs</a> for more information.<p>
+      <p>Examples: <a href="#hhl" id="example1">hhl</a></p>
+      <form id="format-form">
+        <input
+          id="format-input"
+          class="main-input"
+          type="text"
+          placeholder="Paste in a struct format string"
+          autofocus
+        />
+        <input
+          id="format-submit"
+          type="submit"
+        />
+      </form>
+      <div id="explanation"></div>
+      <p>
+        See
+        <a href="https://docs.python.org/3/library/struct.html">Python docs</a>
+        for more information.
+      </p>
+      <p></p>
     </main>
+
     <footer>
-      <p>Made by <a href="https://github.com/branislavjenco">Branislav Jenco</a>.</p>
+      <p>
+        Made by <a href="https://github.com/branislavjenco">Branislav Jenco</a>.
+      </p>
     </footer>
     <script src="lib.js"></script>
     <script src="main.js"></script>

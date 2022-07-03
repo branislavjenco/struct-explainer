@@ -28,6 +28,7 @@ const formatLut = {
     c_type: "_Bool",
     python_type: "bool",
     standard_size: 1,
+    note: "_Bool type is defined by C99. If this type is not available, it is simulated using a char.",
   },
   h: {
     char: "h",
@@ -133,46 +134,81 @@ const byteOrderLut = {
     byte_order: "native",
     size: "native",
     alignment: "native",
+    description:
+      "signifies native byte order, sizes, and alignment. Byte order can be <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian</a> or <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>, dependent on the host system. Sizes and alignment are determined using the C compiler's <a href='https://en.wikipedia.org/wiki/Sizeof'><tt>sizeof</tt></a> expression",
   },
   "=": {
     char: "=",
     byte_order: "native",
     size: "standard",
     alignment: "none",
+    description:
+      "signifies native byte order, but uses standardized sizes and alignment. Byte order can be <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian</a> or <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>, dependent on the host system",
   },
   "<": {
     char: "<",
     byte_order: "little_endian",
     size: "standard",
     alignment: "none",
+    description:
+      "signifies <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian<a> byte order, and standardized sizes and alignment",
   },
   ">": {
     char: ">",
     byte_order: "big_endian",
     size: "standard",
     alignment: "none",
+    description:
+      "signifies big-endian byte order, and standardized sizes and alignment",
   },
   "!": {
     char: "!",
     byte_order: "network",
     size: "standard",
     alignment: "none",
+    description:
+      "signifies network byte order, defined by <a href='https://en.wikipedia.org/wiki/Endianness'>IETF RFC 1700</a> as <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>",
   },
 };
 
-const DEFAULT_BYTE_ORDER_SIZE_ALIGNMENT = "@";
+/**
+ *
+ * @param {Explanation} explanation
+ * @returns
+ */
+function renderExplanation(explanation) {
+  let defaultMessage = "";
+  if (explanation.defaultByteOrderUsed) {
+    defaultMessage =
+      "No byte order, size, and alignment character. Using the default, which is '@'  .\n";
+  }
 
-const invalidMessage = "Not a valid Python3 struct format string";
+  let formatsDescriptions = "";
+  for (const format of explanation.formats) {
+    let formatDescription = `${format.count} times ${format.format.char}. C type: <tt>${format.format.c_type}</tt>. Python type: <tt>${format.format.python_type}</tt>. Standard size: ${format.format.standard_size} bytes.`;
+    if (format.format.note) {
+      formatDescription = formatDescription + ` (${format.format.note})`;
+      formatDescription = `<p>${formatDescription}</p>`;
+    }
+    formatsDescriptions = formatsDescriptions + formatDescription;
+  }
 
-function isNumberChar(ch) {
-  return "1234567990".includes(ch);
+  return `
+  <p>${defaultMessage}</p>
+  <p>"${explanation.byteOrder.char}" ${explanation.byteOrder.description}.</p>
+  ${formatsDescriptions}
+  `;
 }
 
+const DEFAULT_BYTE_ORDER_SIZE_ALIGNMENT = "@";
+
+function isNumberChar(ch) {
+  return "1234567890".includes(ch);
+}
+
+// Just a way to have a name for this structure
 class FormatInfo {
   constructor(count, format, start, end) {
-    if (end - start + 1 !== count) {
-      throw "Start, end and count parameters don't make sense.";
-    }
     this.count = count;
     this.format = format;
     this.start = start;
@@ -180,9 +216,17 @@ class FormatInfo {
   }
 }
 
+class Explanation {
+  constructor(byteOrder, formats, defaultByteOrderUsed) {
+    this.byteOrder = byteOrder;
+    this.formats = formats;
+    this.defaultByteOrderUsed = defaultByteOrderUsed;
+  }
+}
+
 /**
- * Combine identical subsequent formats into one format with a count that is a sum of the subsequent formats  
- * @param {FormatInfo[]} formats 
+ * Combine identical subsequent formats into one format with a count that is a sum of the subsequent formats
+ * @param {FormatInfo[]} formats
  * @returns {FormatInfo[]} coalesced formats
  */
 function coalesceFormats(formats) {
@@ -209,28 +253,34 @@ function coalesceFormats(formats) {
 }
 
 /**
- * Parses the format string 
- * @param {string} formatString 
- * @returns {FormatInfo[]} array of FormatInfo objects
+ * Parses the format string
+ * @param {string} formatString
+ * @returns {Explanation} explanation object
  */
+
 function explainFormatString(formatString) {
   let isInvalid = false;
   const L = formatString.length;
 
   if (L < 1) {
-    return invalidMessage;
+    throw new Error("Format string must have at least one character");
   }
 
   let byteOrder = null;
   const firstChar = formatString[0];
+  let defaultByteOrderUsed = false;
   if (byteOrderLut.hasOwnProperty(firstChar)) {
     byteOrder = byteOrderLut[firstChar];
   } else {
     byteOrder = byteOrderLut[DEFAULT_BYTE_ORDER_SIZE_ALIGNMENT];
+    defaultByteOrderUsed = true;
   }
 
   let formats = [];
   let i = 1;
+  if (defaultByteOrderUsed) {
+    i = 0;
+  }
   let processingCount = false;
   let countBuffer = [];
   while (i < L) {
@@ -238,7 +288,9 @@ function explainFormatString(formatString) {
 
     if (ch === " " && processingCount) {
       // whitespace chars cant be part of count + format
-      return invalidMessage;
+      throw new Error(
+        "Whitespace characters inside the count part are not allowed."
+      );
     }
 
     if (ch === " " && !processingCount) {
@@ -262,30 +314,32 @@ function explainFormatString(formatString) {
 
     // at this point, ch isn't a number
     let count = 1;
+    let start = i;
+    let end = i;
     if (processingCount) {
       processingCount = false;
       count = parseInt(countBuffer.join(""));
+      start = i - countBuffer.length;
       countBuffer = [];
     }
 
     if (!formatLut.hasOwnProperty(ch)) {
-      return invalidMessage;
+      throw new Error(`Unknown format character "${ch}".`);
     }
-    const formatInfo = new FormatInfo(count, formatLut[ch], i, i);
+    const formatInfo = new FormatInfo(count, formatLut[ch], start, end);
     formats.push(formatInfo);
     i = i + 1;
+  }
+  if (formats.length < 1) {
+    throw new Error("No format string found");
+  }
+  if (processingCount) {
+    throw new Error("Number can't be the last character in the format string.");
   }
 
   formats = coalesceFormats(formats);
 
-  return {
-    byteOrder,
-    formats,
-  };
-}
-
-function renderExplanation(explanation) {
-  return JSON.stringify(explanation);
+  return new Explanation(byteOrder, formats, defaultByteOrderUsed);
 }
 
 try {
@@ -295,12 +349,13 @@ try {
     byteOrderLut,
     formatLut,
     FormatInfo,
+    Explanation,
     coalesceFormats,
   };
 } catch (e) {
-  console.log(e);
   // The file is being run by the browser, which doesn't have the module variable defined
-  // place it in the window object
+  // so place it in the window object
+  console.log(e);
   window.explainFormatString = explainFormatString;
   window.renderExplanation = renderExplanation;
 }
