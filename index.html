@@ -8,32 +8,41 @@
       <h1>Explain Python's <tt>struct</tt> format</h1>
     </header>
     <main>
-      <p>Examples: <a href="#hhl" id="example1">hhl</a></p>
-      <form id="format-form">
+      <p>Examples:
+        <tt><a href="http://localhost:8080#hhl" id="example1">hhl</a></tt> |
+        <tt><a href="http://localhost:8080#<4l" id="example1"><4l</a></tt> |
+        <tt><a href="http://localhost:8080#I 2s f" id="example1">I 2s f</a></tt>
+      </p>
+      <form id="format-form" class="format-form">
         <input
           id="format-input"
-          class="main-input"
+          class="format-input"
           type="text"
-          placeholder="Paste in a struct format string"
+          placeholder="Type/paste in a format string"
           autofocus
         />
         <input
           id="format-submit"
+          class="format-submit"
           type="submit"
+          title="Explain!"
+          value="Explain!"
         />
       </form>
       <div id="explanation"></div>
+      &nbsp;
       <p>
         See
-        <a href="https://docs.python.org/3/library/struct.html">Python docs</a>
+        <a href="https://docs.python.org/3/library/struct.html" target="_blank">Python docs on the <tt>struct</tt> module</a>
         for more information.
       </p>
       <p></p>
     </main>
 
     <footer>
+      <p>Found a bug? <a href="https://github.com/branislavjenco/struct-explainer">Submit an issue or PR</a>.</p>
       <p>
-        Made by <a href="https://github.com/branislavjenco">Branislav Jenco</a>.
+        Made by <a href="https://github.com/branislavjenco" target="_blank">Branislav Jenco</a>.
       </p>
     </footer>
     <script src="lib.js"></script>

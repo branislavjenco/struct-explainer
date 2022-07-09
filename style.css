@@ -2,32 +2,49 @@
   box-sizing: border-box;
 }
 
-main {
-  width: 50em;
-}
-
 body {
   display: flex;
-  width: 100%;
-  align-items: center;
+  width: 50em;
+  margin-left: auto;
+  margin-right: auto;
+  /* align-items: center; */
   justify-content: middle;
   flex-direction: column;
   font-family: sans-serif;
   color: #444;
 }
 
-.main-input {
-  width: 20em;
-  font-size: 30;
+.format-input {
+  font-size: 140%;
+  padding:0.2rem;
+  width:100%;
+  font-family: monospace;
 }
 
+.format-form {
+  /* width: 100%;  */
+}
 
+.format-submit {
+  font-size: 130%;
+  margin-top:1rem;
+  font-family: monospace;
+}
+
+tt {
+  font-size:120%;
+  background-color: rgba(68, 68, 68, 0.067);
+  padding: 0.2rem;
+  border-radius: 0.4rem;
+  color:rgb(14, 14, 14)
+  
+}
 
 footer {
   display: flex;
   width: 100%;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   text-align: center;
 }
 

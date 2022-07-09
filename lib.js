@@ -180,22 +180,22 @@ function renderExplanation(explanation) {
   let defaultMessage = "";
   if (explanation.defaultByteOrderUsed) {
     defaultMessage =
-      "No byte order, size, and alignment character. Using the default, which is '@'  .\n";
+      "No byte order, size, and alignment character. Using the default, which is <tt>@</tt>.\n";
   }
 
   let formatsDescriptions = "";
   for (const format of explanation.formats) {
-    let formatDescription = `${format.count} times ${format.format.char}. C type: <tt>${format.format.c_type}</tt>. Python type: <tt>${format.format.python_type}</tt>. Standard size: ${format.format.standard_size} bytes.`;
+    let formatDescription = `${format.count}x <tt>${format.format.c_type}</tt>. Corresponding Python type: <tt>${format.format.python_type}</tt>. Standard size: ${format.format.standard_size} bytes.`;
     if (format.format.note) {
       formatDescription = formatDescription + ` (${format.format.note})`;
-      formatDescription = `<p>${formatDescription}</p>`;
     }
+    formatDescription = `<p>${formatDescription}</p>`;
     formatsDescriptions = formatsDescriptions + formatDescription;
   }
 
   return `
   <p>${defaultMessage}</p>
-  <p>"${explanation.byteOrder.char}" ${explanation.byteOrder.description}.</p>
+  <p><tt>${explanation.byteOrder.char}</tt> ${explanation.byteOrder.description}.</p>
   ${formatsDescriptions}
   `;
 }
@@ -263,7 +263,7 @@ function explainFormatString(formatString) {
   const L = formatString.length;
 
   if (L < 1) {
-    throw new Error("Format string must have at least one character");
+    throw new Error("Format string must have at least one character.");
   }
 
   let byteOrder = null;
@@ -331,7 +331,7 @@ function explainFormatString(formatString) {
     i = i + 1;
   }
   if (formats.length < 1) {
-    throw new Error("No format string found");
+    throw new Error("No format character found!");
   }
   if (processingCount) {
     throw new Error("Number can't be the last character in the format string.");

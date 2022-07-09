@@ -1,25 +1,22 @@
 const inputElement = document.querySelector("#format-input");
 const submitElement = document.querySelector("#format-submit");
 const formElement = document.querySelector("#format-form");
-const explanationElement = document.querySelector('#explanation');
-const example1Element = document.querySelector("#example1");
+const explanationElement = document.querySelector("#explanation");
 
-example1Element.addEventListener('click', (event) => {
-  inputElement.value = event.target.text;
-  formElement.submit();
-})
-
-formElement.addEventListener('submit', (event) => {
-  console.log(event)
-  const formatString = event.target.value; 
+window.addEventListener("hashchange", (event) => {
   try {
+    const formatString = decodeURIComponent(event.newURL.split("#")[1]);
+    inputElement.value = formatString;
     const explanation = explainFormatString(formatString);
     const explanationToRender = renderExplanation(explanation);
     explanationElement.innerHTML = explanationToRender;
-  } catch(e) {
-    console.log(e);
-    explanationElement.textContent = e;
+  } catch (e) {
+    explanationElement.textContent = "Is that correct? " + e.message;
   }
 });
 
-
+formElement.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const formatString = inputElement.value;
+  window.location = "http://localhost:8080#" + formatString;
+});
