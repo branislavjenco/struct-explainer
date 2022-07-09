@@ -2,10 +2,16 @@
   <head>
     <title>Python struct format explainer</title>
     <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="description" content="Explain Python's struct formatting strings">
+    <meta name="keywords" content="Python, struct, format, bytes, C, pack, unpack, pack_into, unpack_from">
+    <meta name="author" content="Branislav Jenco">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body class="body">
     <header>
       <h1>Explain Python's <tt>struct</tt> format</h1>
+      <p>Type in a format string used with Python's <tt>struct</tt> module to get an explanation.</p>
     </header>
     <main>
       <p>Examples:
@@ -15,20 +21,20 @@
         <tt><a href="http://localhost:8080#llh0l">llh0l</a></tt>
       </p>
       <form id="format-form" class="format-form">
-        <input
+        <p><input
           id="format-input"
           class="format-input"
           type="text"
           placeholder="Type/paste in a format string"
           autofocus
-        />
-        <input
+        /></p>
+        <p><input
           id="format-submit"
           class="format-submit"
           type="submit"
           title="Explain!"
           value="Explain!"
-        />
+        /></p>
       </form>
       <div id="explanation"></div>
       &nbsp;
@@ -41,10 +47,10 @@
     </main>
 
     <footer>
-      <p>Found a bug? <a href="https://github.com/branislavjenco/struct-explainer">Submit an issue or PR</a>.</p>
       <p>
         Made by <a href="https://github.com/branislavjenco" target="_blank">Branislav Jenco</a>.
       </p>
+      <p>Found a bug? <a href="https://github.com/branislavjenco/struct-explainer">Submit an issue or PR</a>.</p>
     </footer>
     <script src="lib.js"></script>
     <script src="main.js"></script>

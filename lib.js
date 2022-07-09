@@ -146,7 +146,7 @@ const byteOrderLut = {
     size: "standard",
     alignment: "none",
     description:
-      "signifies native byte order, but uses standardized sizes and alignment. Byte order can be <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian</a> or <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>, dependent on the host system. Use <tt><a href='https://docs.python.org/3/library/sys.html#sys.byteorder'>sys.byteorder</a></tt> to check the endianness of your system. No padding is added when using non-native size and alignment.",
+      "signifies native byte order, but uses standardized sizes and alignment. Byte order can be <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian</a> or <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>, dependent on the host system. Use <tt><a href='https://docs.python.org/3/library/sys.html#sys.byteorder'>sys.byteorder</a></tt> to check the endianness of your system. No padding is added when using non-native size and alignment",
   },
   "<": {
     char: "<",
@@ -196,6 +196,9 @@ function renderExplanation(explanation) {
     if (format.format.note) {
       formatDescription = formatDescription + ` Note: ${format.format.note}`;
     }
+    if (format.count === 0) {
+      formatDescription = `<tt>${format.count}${format.format.char}</tt> aligns the end of the preceeding structure to the size of <tt>${format.format.c_type}</tt>. ${sizeDescription}`
+    }
     formatDescription = `<p>${formatDescription}</p>`;
     formatsDescriptions = formatsDescriptions + formatDescription;
   }
@@ -237,11 +240,12 @@ class Explanation {
  * @returns {FormatInfo[]} coalesced formats
  */
 function coalesceFormats(formats) {
+  console.log(formats)
   let newFormats = [formats[0]];
   for (let i = 1; i < formats.length; i++) {
     const previousFormatInfo = newFormats[newFormats.length - 1];
     const formatInfo = formats[i];
-    if (formatInfo.format.char === previousFormatInfo.format.char) {
+    if (formatInfo.format.char === previousFormatInfo.format.char && previousFormatInfo.count !== 0) {
       newFormats.pop();
       const newCount = formatInfo.count + previousFormatInfo.count;
       const newFormatInfo = new FormatInfo(

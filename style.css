@@ -17,17 +17,12 @@ body {
 .format-input {
   font-size: 140%;
   padding:0.2rem;
-  width:100%;
+  width:50%;
   font-family: monospace;
-}
-
-.format-form {
-  /* width: 100%;  */
 }
 
 .format-submit {
   font-size: 130%;
-  margin-top:1rem;
   font-family: monospace;
 }
 
