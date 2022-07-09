@@ -18,5 +18,5 @@ window.addEventListener("hashchange", (event) => {
 formElement.addEventListener("submit", (event) => {
   event.preventDefault();
   const formatString = inputElement.value;
-  window.location = "http://localhost:8080#" + formatString;
+  window.location = "https://pythonstruct.com#" + formatString;
 });
