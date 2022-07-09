@@ -28,7 +28,7 @@ const formatLut = {
     c_type: "_Bool",
     python_type: "bool",
     standard_size: 1,
-    note: "_Bool type is defined by C99. If this type is not available, it is simulated using a char.",
+    note: "<tt>_Bool</tt> type is defined by C99. If this type is not available, it is simulated using a <tt>char</tt>.",
   },
   h: {
     char: "h",
@@ -92,7 +92,7 @@ const formatLut = {
   },
   e: {
     char: "e",
-    c_type: "TODO",
+    c_type: "IEEE 754 binary16 <a href='https://en.wikipedia.org/wiki/Half-precision_floating-point_format'>'half precision'</a> type",
     python_type: "float",
     standard_size: 2,
   },
@@ -113,18 +113,21 @@ const formatLut = {
     c_type: "char[]",
     python_type: "bytes",
     standard_size: null,
+    note: "The preceeding count determines the length of the bytes."
   },
   p: {
     char: "p",
     c_type: "char[]",
     python_type: "bytes",
     standard_size: null,
+    note: "This is a <i>Pascal string</i> &mdash; short variable-length string stored in a fixed number of bytes, given by the count."
   },
   P: {
     char: "P",
     c_type: "void*",
     python_type: "integer",
     standard_size: null,
+    note: "Only available for native byte ordering."
   },
 };
 
@@ -135,7 +138,7 @@ const byteOrderLut = {
     size: "native",
     alignment: "native",
     description:
-      "signifies native byte order, sizes, and alignment. Byte order can be <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian</a> or <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>, dependent on the host system. Sizes and alignment are determined using the C compiler's <a href='https://en.wikipedia.org/wiki/Sizeof'><tt>sizeof</tt></a> expression",
+      "signifies native byte order, sizes, and alignment. Byte order can be <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian</a> or <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>, dependent on the host system. Use <tt><a href='https://docs.python.org/3/library/sys.html#sys.byteorder'>sys.byteorder</a></tt> to check the endianness of your system. Sizes and alignment are determined using the C compiler's <tt><a href='https://en.wikipedia.org/wiki/Sizeof'>sizeof</a></tt> expression",
   },
   "=": {
     char: "=",
@@ -143,7 +146,7 @@ const byteOrderLut = {
     size: "standard",
     alignment: "none",
     description:
-      "signifies native byte order, but uses standardized sizes and alignment. Byte order can be <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian</a> or <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>, dependent on the host system",
+      "signifies native byte order, but uses standardized sizes and alignment. Byte order can be <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian</a> or <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>, dependent on the host system. Use <tt><a href='https://docs.python.org/3/library/sys.html#sys.byteorder'>sys.byteorder</a></tt> to check the endianness of your system. No padding is added when using non-native size and alignment.",
   },
   "<": {
     char: "<",
@@ -151,7 +154,7 @@ const byteOrderLut = {
     size: "standard",
     alignment: "none",
     description:
-      "signifies <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian<a> byte order, and standardized sizes and alignment",
+      "signifies <a href='https://en.wikipedia.org/wiki/Endianness'>little-endian<a> byte order, and standardized sizes and alignment. No padding is added when using non-native size and alignment.",
   },
   ">": {
     char: ">",
@@ -159,7 +162,7 @@ const byteOrderLut = {
     size: "standard",
     alignment: "none",
     description:
-      "signifies big-endian byte order, and standardized sizes and alignment",
+      "signifies big-endian byte order, and standardized sizes and alignment. No padding is added when using non-native size and alignment.",
   },
   "!": {
     char: "!",
@@ -167,7 +170,7 @@ const byteOrderLut = {
     size: "standard",
     alignment: "none",
     description:
-      "signifies network byte order, defined by <a href='https://en.wikipedia.org/wiki/Endianness'>IETF RFC 1700</a> as <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>",
+      "signifies network byte order, defined by <a href='https://en.wikipedia.org/wiki/Endianness'>IETF RFC 1700</a> as <a href='https://en.wikipedia.org/wiki/Endianness'>big-endian</a>. No padding is added when using non-native size and alignment.",
   },
 };
 
@@ -185,9 +188,13 @@ function renderExplanation(explanation) {
 
   let formatsDescriptions = "";
   for (const format of explanation.formats) {
-    let formatDescription = `${format.count}x <tt>${format.format.c_type}</tt>. Corresponding Python type: <tt>${format.format.python_type}</tt>. Standard size: ${format.format.standard_size} bytes.`;
+    let sizeDescription = `Standard size: ${format.format.standard_size} bytes`;
+    if (!format.format.standard_size) {
+      sizeDescription = `No standard size defined.`
+    }
+    let formatDescription = `${format.count}&#215 <tt>${format.format.c_type}</tt>. Corresponding Python type: <tt>${format.format.python_type}</tt>. ${sizeDescription}`;
     if (format.format.note) {
-      formatDescription = formatDescription + ` (${format.format.note})`;
+      formatDescription = formatDescription + ` Note: ${format.format.note}`;
     }
     formatDescription = `<p>${formatDescription}</p>`;
     formatsDescriptions = formatsDescriptions + formatDescription;
