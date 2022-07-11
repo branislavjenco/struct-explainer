@@ -22,7 +22,7 @@ window.addEventListener("hashchange", (event) => {
 });
 
 window.addEventListener("load", (event) => {
-  if (event.target.URL) {
+  if (event.target.URL && event.target.URL.includes("#")) {
     main(event.target.URL);
   }
 });
