@@ -240,7 +240,6 @@ class Explanation {
  * @returns {FormatInfo[]} coalesced formats
  */
 function coalesceFormats(formats) {
-  console.log(formats)
   let newFormats = [formats[0]];
   for (let i = 1; i < formats.length; i++) {
     const previousFormatInfo = newFormats[newFormats.length - 1];
