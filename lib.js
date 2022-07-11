@@ -365,7 +365,7 @@ try {
 } catch (e) {
   // The file is being run by the browser, which doesn't have the module variable defined
   // so place it in the window object
-  console.log(e);
+  // console.log(e);
   window.explainFormatString = explainFormatString;
   window.renderExplanation = renderExplanation;
 }
