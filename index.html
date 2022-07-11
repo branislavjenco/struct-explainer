@@ -2,46 +2,65 @@
   <head>
     <title>Python struct format explainer</title>
     <link rel="stylesheet" href="style.css" />
-    <meta charset="UTF-8">
-    <meta name="description" content="Explain Python's struct formatting strings">
-    <meta name="keywords" content="Python, struct, format, bytes, C, pack, unpack, pack_into, unpack_from">
-    <meta name="author" content="Branislav Jenco">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script data-goatcounter="https://pythonstruct.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Explain Python's struct formatting strings"
+    />
+    <meta
+      name="keywords"
+      content="Python, struct, format, bytes, C, pack, unpack, pack_into, unpack_from"
+    />
+    <meta name="author" content="Branislav Jenco" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      data-goatcounter="https://pythonstruct.goatcounter.com/count"
+      async
+      src="//gc.zgo.at/count.js"
+    ></script>
   </head>
   <body class="body">
     <header>
       <h1>Explain Python's <tt>struct</tt> format</h1>
-      <p>Type in a format string used with Python's <tt>struct</tt> module to get an explanation.</p>
+      <p>
+        Type in a format string used with Python's <tt>struct</tt> module to get
+        an explanation.
+      </p>
     </header>
     <main>
-      <p>Examples:
-        <tt><a href="https://pythonstruct.com#hhl">hhl</a></tt> |
+      <p>
+        Examples: <tt><a href="https://pythonstruct.com#hhl">hhl</a></tt> |
         <tt><a href="https://pythonstruct.com#<4l"><4l</a></tt> |
         <tt><a href="https://pythonstruct.com#I 2s f">I 2s f</a></tt>
         <tt><a href="https://pythonstruct.com#llh0l">llh0l</a></tt>
       </p>
       <form id="format-form" class="format-form">
-        <p><input
-          id="format-input"
-          class="format-input"
-          type="text"
-          placeholder="Type/paste in a format string"
-          autofocus
-        /></p>
-        <p><input
-          id="format-submit"
-          class="format-submit"
-          type="submit"
-          title="Explain!"
-          value="Explain!"
-        /></p>
+        <p>
+          <input
+            id="format-input"
+            class="format-input"
+            type="text"
+            placeholder="Type/paste in a format string"
+            autofocus
+          />
+        </p>
+        <p>
+          <input
+            id="format-submit"
+            class="format-submit"
+            type="submit"
+            title="Explain!"
+            value="Explain!"
+          />
+        </p>
       </form>
       <div id="explanation"></div>
       &nbsp;
       <p>
         See
-        <a href="https://docs.python.org/3/library/struct.html" target="_blank">Python docs on the <tt>struct</tt> module</a>
+        <a href="https://docs.python.org/3/library/struct.html" target="_blank"
+          >Python docs on the <tt>struct</tt> module</a
+        >
         for more information.
       </p>
       <p></p>
@@ -49,9 +68,17 @@
 
     <footer>
       <p>
-        Made by <a href="https://github.com/branislavjenco" target="_blank">Branislav Jenco</a>.
+        Made by
+        <a href="https://github.com/branislavjenco" target="_blank"
+          >Branislav Jenco</a
+        >.
       </p>
-      <p>Found a bug? <a href="https://github.com/branislavjenco/struct-explainer">Submit an issue or PR</a>.</p>
+      <p>
+        Found a bug?
+        <a href="https://github.com/branislavjenco/struct-explainer"
+          >Submit an issue or PR</a
+        >.
+      </p>
     </footer>
     <script src="lib.js"></script>
     <script src="main.js"></script>
