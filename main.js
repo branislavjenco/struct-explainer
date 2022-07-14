@@ -16,7 +16,7 @@ function main(url) {
 }
 
 window.addEventListener("hashchange", (event) => {
-  if (event.newURL) {
+  if (event.newURL && event.target.newURL.includes("#")) {
     main(event.newURL);
   }
 });
